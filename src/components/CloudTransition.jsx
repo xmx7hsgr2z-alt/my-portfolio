@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import './CloudTransition.css'
 
+const youtubeIntroUrl =
+  'https://www.youtube-nocookie.com/embed/PeY9pWJ2Mbk?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1&playsinline=1&loop=1&playlist=PeY9pWJ2Mbk&start=0'
+
 export default function CloudTransition() {
   const [isVisible, setIsVisible] = useState(() => {
     if (typeof window === 'undefined') return true
@@ -11,8 +14,8 @@ export default function CloudTransition() {
   useEffect(() => {
     if (!isVisible) return undefined
 
-    const fadeTimer = window.setTimeout(() => setIsFading(true), 3300)
-    const removeTimer = window.setTimeout(() => setIsVisible(false), 4700)
+    const fadeTimer = window.setTimeout(() => setIsFading(true), 5200)
+    const removeTimer = window.setTimeout(() => setIsVisible(false), 6600)
 
     return () => {
       window.clearTimeout(fadeTimer)
@@ -24,9 +27,15 @@ export default function CloudTransition() {
 
   return (
     <div className={`cloud-transition ${isFading ? 'is-fading' : ''}`} aria-hidden="true">
-      <video className="cloud-video" autoPlay muted playsInline loop preload="auto">
-        <source src={`${import.meta.env.BASE_URL}clouds-intro.webm`} type="video/webm" />
-      </video>
+      <div className="cloud-video-wrap">
+        <iframe
+          className="cloud-video"
+          src={youtubeIntroUrl}
+          title="Intro transition video"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      </div>
       <div className="cloud-vignette" />
       <div className="cloud-glow" />
       <div className="cloud-mist" />

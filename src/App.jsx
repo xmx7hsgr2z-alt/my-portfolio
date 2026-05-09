@@ -57,22 +57,38 @@ const skillIcons = {
 function App() {
   useEffect(() => {
     const elements = document.querySelectorAll('[data-reveal]')
+    const sections = document.querySelectorAll('main > section')
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
+          } else {
+            entry.target.classList.remove('is-visible')
           }
         })
       },
-      { threshold: 0.18 },
+      { threshold: 0.18, rootMargin: '0px 0px -8% 0px' },
+    )
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-section-visible', entry.isIntersecting)
+        })
+      },
+      { threshold: 0.16, rootMargin: '-8% 0px -18% 0px' },
     )
 
     elements.forEach((element) => observer.observe(element))
+    sections.forEach((section) => {
+      section.classList.add('scroll-section')
+      sectionObserver.observe(section)
+    })
 
     return () => {
       observer.disconnect()
+      sectionObserver.disconnect()
+      sections.forEach((section) => section.classList.remove('scroll-section', 'is-section-visible'))
     }
   }, [])
 
