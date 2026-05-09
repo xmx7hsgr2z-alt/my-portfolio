@@ -8,6 +8,7 @@ Gen Z-style responsive portfolio built with React.js, CSS3, Vite, Three.js, and 
 - GitHub link and public project cards from `github.com/xmx7hsgr2z-alt`.
 - Profile photo from the provided image.
 - Resume PDF in `public/Kumar_Saurav_Resume.pdf`.
+- Full-screen cloud video intro in `public/clouds-intro.webm`.
 - Freelance section using six downloaded Dropbox transfer projects:
   - Impulse Classes
   - Scholars Hub Defence Institute
@@ -62,12 +63,9 @@ Assets:
 src/assets/kumar-saurav-photo.jpeg
 src/assets/freelance/
 public/Kumar_Saurav_Resume.pdf
+public/clouds-intro.webm
 ```
 
-## Figma Wireframes
+## Media Credits
 
-Previous Figma file:
-
-```text
-https://www.figma.com/design/9ROHt8lVCIb9ii6pOCwDKF
-```
+- Cloud intro video: "Clouds (time lapse).webm" by https://www.youtube.com/user/Editor, via Wikimedia Commons, licensed CC BY 3.0.
