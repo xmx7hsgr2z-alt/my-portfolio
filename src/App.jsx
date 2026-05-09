@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -55,8 +55,6 @@ const skillIcons = {
 }
 
 function App() {
-  const [showCloudIntro, setShowCloudIntro] = useState(true)
-
   useEffect(() => {
     const elements = document.querySelectorAll('[data-reveal]')
     const observer = new IntersectionObserver(
@@ -73,17 +71,14 @@ function App() {
 
     elements.forEach((element) => observer.observe(element))
 
-    const introTimer = window.setTimeout(() => setShowCloudIntro(false), 15000)
     return () => {
       observer.disconnect()
-      window.clearTimeout(introTimer)
     }
   }, [])
 
   return (
     <div className="site">
       <CloudTransition />
-      {showCloudIntro && <div className="cloud-intro" aria-hidden="true" />}
       <header className="site-header">
         <a className="brand" href="#home" aria-label={`${profile.name} home`}>
           <span className="brand-mark">{profile.initials}</span>

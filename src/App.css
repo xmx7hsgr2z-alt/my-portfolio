@@ -7,50 +7,6 @@
   animation: fadeInUp 0.8s ease-out;
 }
 
-.cloud-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(224, 230, 255, 0.22), transparent 18%),
-    radial-gradient(circle at 72% 24%, rgba(99, 102, 241, 0.18), transparent 16%),
-    radial-gradient(circle at 42% 72%, rgba(138, 92, 246, 0.16), transparent 16%);
-  filter: blur(36px);
-  opacity: 1;
-  animation: cloudFloat 15s ease-out forwards;
-}
-
-.cloud-intro::before,
-.cloud-intro::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 32% 42%, rgba(255, 255, 255, 0.16), transparent 14%),
-    radial-gradient(circle at 68% 55%, rgba(255, 255, 255, 0.10), transparent 12%);
-}
-
-.cloud-intro::after {
-  transform: scale(1.1);
-  filter: blur(16px);
-}
-
-@keyframes cloudFloat {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  80% {
-    opacity: 1;
-    transform: translateY(-18px) scale(1.03);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-48px) scale(1.08);
-  }
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;

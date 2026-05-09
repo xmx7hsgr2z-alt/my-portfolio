@@ -2,58 +2,62 @@ import { useEffect, useState } from 'react'
 import './CloudTransition.css'
 
 export default function CloudTransition() {
-  const [isVisible, setIsVisible] = useState(true)
-  const [isFadingOut, setIsFadingOut] = useState(false)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  })
+  const [isOpening, setIsOpening] = useState(false)
+  const [isLeaving, setIsLeaving] = useState(false)
 
   useEffect(() => {
-    // Start transition effect after 3 seconds
-    const transitionTimer = setTimeout(() => {
-      setIsTransitioning(true)
-    }, 3000)
+    if (!isVisible) return undefined
 
-    // Start fading out after 4.5 seconds
-    const fadeTimer = setTimeout(() => {
-      setIsFadingOut(true)
-    }, 4500)
-
-    // Completely remove after fade animation completes (1.5s)
-    const removeTimer = setTimeout(() => {
-      setIsVisible(false)
-    }, 6000)
+    const openTimer = window.setTimeout(() => setIsOpening(true), 1700)
+    const leaveTimer = window.setTimeout(() => setIsLeaving(true), 3900)
+    const removeTimer = window.setTimeout(() => setIsVisible(false), 5200)
 
     return () => {
-      clearTimeout(transitionTimer)
-      clearTimeout(fadeTimer)
-      clearTimeout(removeTimer)
+      window.clearTimeout(openTimer)
+      window.clearTimeout(leaveTimer)
+      window.clearTimeout(removeTimer)
     }
-  }, [])
+  }, [isVisible])
 
   if (!isVisible) return null
 
   return (
-    <div className={`cloud-transition ${isFadingOut ? 'is-fading-out' : ''} ${isTransitioning ? 'is-transitioning' : ''}`}>
-      <div className="clouds-container">
-        <div className="cloud-layer layer-1">
-          <div className="cloud cloud-1" />
-          <div className="cloud cloud-2" />
-          <div className="cloud cloud-3" />
-        </div>
-        <div className="cloud-layer layer-2">
-          <div className="cloud cloud-4" />
-          <div className="cloud cloud-5" />
-          <div className="cloud cloud-6" />
-        </div>
-        <div className="cloud-layer layer-3">
-          <div className="cloud cloud-7" />
-          <div className="cloud cloud-8" />
-          <div className="cloud cloud-9" />
-        </div>
+    <div
+      className={`cloud-transition ${isOpening ? 'is-opening' : ''} ${isLeaving ? 'is-leaving' : ''}`}
+      aria-hidden="true"
+    >
+      <div className="cloud-sky" />
+      <div className="cloud-light" />
+      <div className="cloud-depth cloud-depth-back" />
+      <div className="cloud-depth cloud-depth-mid" />
+
+      <div className="cloud-curtain cloud-curtain-left">
+        <span className="cloud-bank cloud-bank-1" />
+        <span className="cloud-bank cloud-bank-2" />
+        <span className="cloud-bank cloud-bank-3" />
+        <span className="cloud-bank cloud-bank-4" />
       </div>
-      <div className="transition-overlay">
-        <div className="loading-bar">
-          <div className="loading-progress" />
-        </div>
+
+      <div className="cloud-curtain cloud-curtain-right">
+        <span className="cloud-bank cloud-bank-5" />
+        <span className="cloud-bank cloud-bank-6" />
+        <span className="cloud-bank cloud-bank-7" />
+        <span className="cloud-bank cloud-bank-8" />
+      </div>
+
+      <div className="cloud-depth cloud-depth-front" />
+      <div className="cloud-flash" />
+      <div className="cloud-grain" />
+
+      <div className="cloud-letterbox cloud-letterbox-top" />
+      <div className="cloud-letterbox cloud-letterbox-bottom" />
+
+      <div className="cloud-loader">
+        <span />
       </div>
     </div>
   )
