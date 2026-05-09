@@ -22,6 +22,7 @@
 .cloud-vignette,
 .cloud-glow,
 .cloud-mist,
+.cloud-control-cover,
 .cloud-loader {
   position: absolute;
 }
@@ -31,8 +32,8 @@
   left: 50%;
   width: max(100vw, 177.778vh);
   height: max(100vh, 56.25vw);
-  transform: translate(-50%, -50%) scale(1.18);
-  animation: cloudVideoPush 4.7s ease-out forwards;
+  transform: translate(-50%, -50%) rotate(180deg) scale(1.55);
+  animation: cloudVideoPush 5.2s ease-out forwards;
 }
 
 .cloud-video {
@@ -46,9 +47,10 @@
 .cloud-vignette {
   inset: 0;
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.05), transparent 34%),
-    linear-gradient(180deg, rgba(4, 8, 16, 0.28), transparent 24%, transparent 68%, rgba(4, 8, 16, 0.38));
-  background-color: rgba(5, 7, 13, 0.08);
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.02), transparent 34%),
+    radial-gradient(ellipse at 50% 110%, rgba(255, 255, 255, 0.2), transparent 0 42%),
+    linear-gradient(180deg, rgba(4, 8, 16, 0.22), transparent 26%, transparent 60%, rgba(4, 8, 16, 0.42));
+  background-color: rgba(5, 7, 13, 0.16);
 }
 
 .cloud-glow {
@@ -69,6 +71,21 @@
   background-size: 100% 4px, auto, auto;
   opacity: 0.46;
   pointer-events: none;
+}
+
+.cloud-control-cover {
+  top: 50%;
+  left: 50%;
+  width: min(500px, 48vw);
+  aspect-ratio: 2.45 / 1;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at center, rgba(224, 227, 218, 0.96), rgba(204, 209, 198, 0.8) 38%, rgba(185, 194, 188, 0.38) 66%, transparent 78%);
+  filter: blur(20px);
+  opacity: 0.94;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(180deg);
+  animation: cloudCoverDrift 5.2s ease-out forwards;
 }
 
 .cloud-loader {
@@ -99,10 +116,10 @@
 
 @keyframes cloudVideoPush {
   0% {
-    transform: translate(-50%, -50%) scale(1.36);
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.74);
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.18);
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.55);
   }
 }
 
@@ -129,14 +146,29 @@
   }
 }
 
+@keyframes cloudCoverDrift {
+  0% {
+    opacity: 0.54;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.9);
+  }
+  100% {
+    opacity: 0.86;
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.18);
+  }
+}
+
 @media (max-width: 720px) {
   .cloud-video-wrap {
     width: max(118vw, 177.778vh);
     height: max(100vh, 66.4vw);
-    transform: translate(-50%, -50%) scale(1.24);
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.88);
   }
 
   .cloud-loader {
     width: min(210px, 56vw);
+  }
+
+  .cloud-control-cover {
+    width: min(300px, 62vw);
   }
 }

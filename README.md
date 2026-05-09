@@ -8,7 +8,7 @@ Gen Z-style responsive portfolio built with React.js, CSS3, Vite, Three.js, and 
 - GitHub link and public project cards from `github.com/xmx7hsgr2z-alt`.
 - Profile photo from the provided image.
 - Resume PDF in `public/Kumar_Saurav_Resume.pdf`.
-- Full-screen YouTube intro transition.
+- Cropped YouTube intro transition, embedded without bundling a downloaded video file.
 - Freelance section using six downloaded Dropbox transfer projects:
   - Impulse Classes
   - Scholars Hub Defence Institute
