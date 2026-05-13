@@ -25,6 +25,7 @@
 .primary-nav a,
 .nav-icon-button,
 .button,
+.visual-card,
 .card-actions a,
 .social-row a,
 .site-footer a {
@@ -362,6 +363,7 @@ h3 {
 
 .visual-card {
   position: relative;
+  display: block;
   aspect-ratio: 16 / 10;
   min-height: 0;
   overflow: hidden;
@@ -429,14 +431,31 @@ h3 {
   line-height: 1.45;
 }
 
+.visual-action {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 950;
+}
+
 .visual-card:hover,
-.visual-card:focus-within {
+.visual-card:focus-within,
+.visual-card:focus-visible {
   box-shadow: 0 30px 70px rgba(5, 5, 9, 0.14);
   transform: translateY(-6px);
 }
 
+.visual-card:focus-visible {
+  outline: 3px solid #050509;
+  outline-offset: 4px;
+}
+
 .visual-card:hover img,
-.visual-card:focus-within img {
+.visual-card:focus-within img,
+.visual-card:focus-visible img {
   filter: saturate(1.06) contrast(1.02);
   transform: scale(1.04);
 }
@@ -444,7 +463,9 @@ h3 {
 .visual-card:hover::after,
 .visual-card:hover .visual-caption,
 .visual-card:focus-within::after,
-.visual-card:focus-within .visual-caption {
+.visual-card:focus-within .visual-caption,
+.visual-card:focus-visible::after,
+.visual-card:focus-visible .visual-caption {
   opacity: 1;
   transform: translateY(0);
 }

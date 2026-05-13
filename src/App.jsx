@@ -158,16 +158,34 @@ function App() {
             </div>
 
             <div className="work-gallery">
-              {freelanceProjects.map((project) => (
-                <article className="visual-card" key={project.title} data-reveal>
-                  <img src={project.image} alt={`${project.title} website preview`} />
-                  <div className="visual-caption">
-                    <span>{project.category}</span>
-                    <h3>{project.title}</h3>
-                    <p>{project.result}</p>
-                  </div>
-                </article>
-              ))}
+              {freelanceProjects.map((project) => {
+                const Card = project.live ? 'a' : 'article'
+
+                return (
+                  <Card
+                    className="visual-card"
+                    key={project.title}
+                    data-reveal
+                    href={project.live}
+                    target={project.live ? '_blank' : undefined}
+                    rel={project.live ? 'noreferrer' : undefined}
+                    aria-label={project.live ? `Open ${project.title} live demo` : undefined}
+                  >
+                    <img src={project.image} alt={`${project.title} website preview`} />
+                    <div className="visual-caption">
+                      <span>{project.category}</span>
+                      <h3>{project.title}</h3>
+                      <p>{project.result}</p>
+                      {project.live ? (
+                        <span className="visual-action">
+                          Open live demo
+                          <ArrowUpRight size={15} aria-hidden="true" />
+                        </span>
+                      ) : null}
+                    </div>
+                  </Card>
+                )
+              })}
             </div>
           </div>
         </section>

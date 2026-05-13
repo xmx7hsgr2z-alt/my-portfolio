@@ -1,6 +1,8 @@
 import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
 import impulseClasses from '../assets/freelance/impulse-classes.jpg'
 import ivoryDental from '../assets/freelance/ivory-dental.jpg'
+import neettuMakeoverBridalBooking from '../assets/freelance/neettu-makeover-bridal-booking.jpg'
+import neettuMakeoverStudioAcademy from '../assets/freelance/neettu-makeover-studio-academy.jpg'
 import profilePhoto from '../assets/kumar-saurav-photo.jpeg'
 import scholarsHub from '../assets/freelance/scholars-hub.jpg'
 import sriRamMedical from '../assets/freelance/sri-ram-medical.jpg'
@@ -35,9 +37,9 @@ export const navItems = [
 ]
 
 export const stats = [
-  { value: '8+', label: 'Real-world projects' },
+  { value: '10+', label: 'Real-world projects' },
   { value: '5', label: 'Public GitHub repos' },
-  { value: '6', label: 'Freelance demos' },
+  { value: '8', label: 'Freelance demos' },
   { value: 'BCA', label: 'Full-stack student' },
 ]
 
@@ -103,6 +105,26 @@ export const featuredProjects = [
 ]
 
 export const freelanceProjects = [
+  {
+    title: 'Neettu Makeover Studio & Academy',
+    category: 'Beauty studio website',
+    description:
+      'A premium bridal makeup and academy website with services, gallery, trust markers, and WhatsApp-led booking.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    image: neettuMakeoverStudioAcademy,
+    result: 'Dark bridal booking experience',
+    live: `${import.meta.env.BASE_URL}projects/neettu-makeover-studio-academy/`,
+  },
+  {
+    title: 'Neettu Makeover Bridal Booking',
+    category: 'Salon booking concept',
+    description:
+      'An editorial landing page for bridal glam, salon care, academy training, ratings, gallery, and direct inquiry flow.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    image: neettuMakeoverBridalBooking,
+    result: 'Editorial salon booking flow',
+    live: `${import.meta.env.BASE_URL}projects/neettu-makeover-bridal-booking/`,
+  },
   {
     title: 'Impulse Classes',
     category: 'Education landing page',
