@@ -108,13 +108,13 @@ export const featuredProjects = [
 export const freelanceProjects = [
   {
     title: 'FashionHub Buxar',
-    category: 'E-commerce store',
+    category: 'Bridal lehenga rental store',
     description:
-      'A static local store scaffold with a clean UI, product catalog, and a custom Python CSV importer.',
-    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+      "Full-stack lehenga rental store for Buxar's first dedicated bridal studio. Real product images, category filtering, rental booking flow, and live inventory — built with React, Node.js, Express, and PostgreSQL.",
+    stack: ['React', 'Node.js', 'Express', 'PostgreSQL'],
     image: fashionhub,
-    result: 'Local store preview',
-    live: `${import.meta.env.BASE_URL}projects/fashionhub/`,
+    result: 'Live rental store',
+    live: 'https://fashionhubbux-store-design--sr7055446221.replit.app',
   },
   {
     title: 'Neettu Makeover Studio & Academy',
