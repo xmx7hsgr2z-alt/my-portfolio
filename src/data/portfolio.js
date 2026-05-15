@@ -1,4 +1,6 @@
-import fashionhub from '../assets/freelance/fashionhub.jpg'
+// Note: FashionHub preview uses the PNG from the public project assets.
+const fashionhub = `${import.meta.env.BASE_URL}projects/fashionhub/images/fashionhub.png`
+
 import impulseClasses from '../assets/freelance/impulse-classes.jpg'
 import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
 import ivoryDental from '../assets/freelance/ivory-dental.jpg'
