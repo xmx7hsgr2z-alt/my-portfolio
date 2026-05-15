@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product — FashionHub Buxar</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="logo">FashionHub Buxar</div>
+      <nav class="nav"><a href="index.html">Home</a></nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <div id="product-detail" class="product-detail"></div>
+  </main>
+  <footer class="site-footer wrap"></footer>
+
+  <script src="js/products-data.js"></script>
+  <script>
+  function getParam(name){ const p=new URLSearchParams(location.search); return p.get(name); }
+  function renderProduct(sku){
+    const p = (window.PRODUCTS||[]).find(x=>x.sku===sku);
+    const container = document.getElementById('product-detail');
+    if(!p){ container.innerHTML='<p>Product not found.</p>'; return; }
+    container.innerHTML = `
+      <div class="pd">
+        <div class="pd-images">
+          ${p.images.map(src=>`<img src="${src}" alt="${p.title}" onerror="this.src='images/placeholder.svg'">`).join('')}
+        </div>
+        <div class="pd-info">
+          <h2>${p.title}</h2>
+          <p class="price">${p.currency} ${p.price}</p>
+          <p>${p.description||''}</p>
+          <button id="addToCart">Add to cart</button>
+        </div>
+      </div>
+    `;
+  }
+  document.addEventListener('DOMContentLoaded',()=>{ renderProduct(getParam('sku')||getParam('id')); });
+  </script>
+</body>
+</html>

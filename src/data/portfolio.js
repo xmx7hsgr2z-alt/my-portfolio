@@ -1,5 +1,6 @@
-import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
+import fashionhub from '../assets/freelance/fashionhub.jpg'
 import impulseClasses from '../assets/freelance/impulse-classes.jpg'
+import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
 import ivoryDental from '../assets/freelance/ivory-dental.jpg'
 import neettuMakeoverBridalBooking from '../assets/freelance/neettu-makeover-bridal-booking.jpg'
 import neettuMakeoverStudioAcademy from '../assets/freelance/neettu-makeover-studio-academy.jpg'
@@ -105,6 +106,16 @@ export const featuredProjects = [
 ]
 
 export const freelanceProjects = [
+  {
+    title: 'FashionHub Buxar',
+    category: 'E-commerce store',
+    description:
+      'A static local store scaffold with a clean UI, product catalog, and a custom Python CSV importer.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    image: fashionhub,
+    result: 'Local store preview',
+    live: `${import.meta.env.BASE_URL}projects/fashionhub/`,
+  },
   {
     title: 'Neettu Makeover Studio & Academy',
     category: 'Beauty studio website',
