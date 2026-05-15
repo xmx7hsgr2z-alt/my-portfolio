@@ -6,7 +6,10 @@ import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
 import ivoryDental from '../assets/freelance/ivory-dental.jpg'
 import neettuMakeoverBridalBooking from '../assets/freelance/neettu-makeover-bridal-booking.jpg'
 import neettuMakeoverStudioAcademy from '../assets/freelance/neettu-makeover-studio-academy.jpg'
-import profilePhoto from '../assets/kumar-saurav-photo.jpeg'
+// profile photo import removed (missing file in this workspace).
+const profilePhoto = `${import.meta.env.BASE_URL}projects/neettu-makeover-studio-academy/assets/images/photo-02.jpg`
+
+
 import scholarsHub from '../assets/freelance/scholars-hub.jpg'
 import sriRamMedical from '../assets/freelance/sri-ram-medical.jpg'
 import visionInstitute from '../assets/freelance/vision-institute.jpg'
