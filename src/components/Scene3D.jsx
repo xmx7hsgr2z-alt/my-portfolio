@@ -67,13 +67,15 @@ export default function Scene3D() {
     scene.add(ambient, key, fill)
 
     const glassMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xf1f2f5,
-      roughness: 0.28,
-      metalness: 0.02,
-      clearcoat: 0.8,
-      clearcoatRoughness: 0.2,
+      color: 0xffffff,
+      roughness: 0.18,
+      metalness: 0.08,
+      transmission: 0.85,
+      thickness: 1.8,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.12,
       transparent: true,
-      opacity: 0.64,
+      opacity: 0.75,
     })
 
     const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, 2), glassMaterial)
