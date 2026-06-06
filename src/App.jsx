@@ -3,18 +3,12 @@ import {
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
-  Code2,
   Download,
-  ExternalLink,
   GitBranch,
-  Layers3,
   Mail,
   MapPin,
-  MonitorSmartphone,
   Phone,
   Send,
-  Server,
-  Sparkles,
 } from 'lucide-react'
 import './App.css'
 import Scene3D from './components/Scene3D.jsx'
@@ -23,73 +17,201 @@ import {
   featuredProjects,
   freelanceProjects,
   profile,
-  services,
   skills,
   stats,
   strengths,
+  timeline,
 } from './data/portfolio.js'
 
 const navItems = [
+  { label: 'Home', href: '#home' },
+  { label: 'Experience', href: '#experience' },
   { label: 'Work', href: '#work' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
   { label: 'Contact', href: '#contact' },
 ]
 
-const serviceIcons = {
-  Websites: MonitorSmartphone,
-  Apps: Server,
-  Content: Sparkles,
-}
-
-const socialLinks = [
-  {
-    label: 'Email',
-    href: `mailto:${profile.email}`,
-    Icon: Mail,
-  },
+const contactLinks = [
+  { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: Mail },
   {
     label: 'Phone',
+    value: profile.phone,
     href: `tel:${profile.phone.replace(/\s/g, '')}`,
     Icon: Phone,
   },
   {
     label: 'GitHub',
+    value: 'xmx7hsgr2z-alt',
     href: profile.github,
     Icon: GitBranch,
     external: true,
   },
-  {
-    label: 'Resume',
-    href: profile.resume,
-    Icon: Download,
-    external: true,
-  },
 ]
 
-function App() {
+function useReveal() {
   useEffect(() => {
     const elements = document.querySelectorAll('[data-reveal]')
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          entry.target.classList.toggle('is-visible', entry.isIntersecting)
+          if (entry.isIntersecting) entry.target.classList.add('is-visible')
         })
       },
-      { threshold: 0.14, rootMargin: '0px 0px -10% 0px' },
+      { threshold: 0.16, rootMargin: '0px 0px -10% 0px' },
     )
 
     elements.forEach((element) => observer.observe(element))
-
     return () => observer.disconnect()
   }, [])
+}
+
+function useScrollEffects() {
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return undefined
+
+    const animated = [
+      ...document.querySelectorAll('.preview-track, .section-title, .work-card, .hero-copy'),
+    ]
+    let frame = 0
+
+    const update = () => {
+      const viewport = window.innerHeight || 1
+      animated.forEach((element) => {
+        const rect = element.getBoundingClientRect()
+        const progress = 1 - rect.top / viewport
+        const clamped = Math.max(0, Math.min(1, progress))
+        element.style.setProperty('--scroll-progress', clamped.toFixed(3))
+      })
+      frame = 0
+    }
+
+    const requestUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', requestUpdate)
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', requestUpdate)
+      window.removeEventListener('resize', requestUpdate)
+    }
+  }, [])
+}
+
+function useHashScroll() {
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash
+      if (!hash) return
+
+      const target = document.querySelector(hash)
+      if (target) target.scrollIntoView({ block: 'start' })
+    }
+
+    const timeout = window.setTimeout(scrollToHash, 250)
+    window.addEventListener('hashchange', scrollToHash)
+
+    return () => {
+      window.clearTimeout(timeout)
+      window.removeEventListener('hashchange', scrollToHash)
+    }
+  }, [])
+}
+
+function GradientButton({ href, children, className = '', external = false }) {
+  return (
+    <a
+      className={`gradient-button ${className}`}
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noreferrer' : undefined}
+    >
+      {children}
+    </a>
+  )
+}
+
+function WorkStack({ title, kicker, projects, previewImages = [], startAt = 1, variant = 'website' }) {
+  return (
+    <div className="work-group">
+      <div className="work-group-heading">
+        <span>{kicker}</span>
+        <h3>{title}</h3>
+      </div>
+
+      <div className="work-stack">
+        {projects.map((project, index) => {
+          const fallbackImage = previewImages.length
+            ? previewImages[index % previewImages.length]?.image
+            : undefined
+          const previewImage = project.image || (variant === 'website' ? fallbackImage : undefined)
+          const hasLive = Boolean(project.live)
+          const href = project.live || project.link || '#contact'
+          const isExternal = /^https?:\/\//.test(href)
+
+          return (
+            <article className="work-card" key={`${title}-${project.title}-${index}`} data-reveal>
+              <div className="work-card-top">
+                <span className="work-number">{String(startAt + index).padStart(2, '0')}</span>
+                <div>
+                  <h3>{project.title}</h3>
+                  <p>{project.type || project.category}</p>
+                </div>
+                <a
+                  href={href}
+                  target={isExternal ? '_blank' : undefined}
+                  rel={isExternal ? 'noreferrer' : undefined}
+                  className="live-pill"
+                >
+                  {hasLive ? 'Live Project' : project.link ? 'Source Code' : 'Project Preview'}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </a>
+              </div>
+
+              <div className="work-card-body">
+                {previewImage ? (
+                  <img src={previewImage} alt={`${project.title} preview`} />
+                ) : (
+                  <div className={`code-preview ${variant === 'software' ? 'software-preview' : ''}`} aria-hidden="true">
+                    <span>{variant === 'software' ? '{ API + DATABASE }' : '<portfolio />'}</span>
+                  </div>
+                )}
+                <div>
+                  <p>{project.description}</p>
+                  <div className="tag-row" aria-label={`${project.title} tech stack`}>
+                    {(project.stack || []).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function App() {
+  useReveal()
+  useScrollEffects()
+  useHashScroll()
+
+  const featuredPreview = freelanceProjects.slice(0, 6)
+  const websiteProjects = freelanceProjects
+  const softwareProjects = featuredProjects
 
   return (
     <div className="site-shell">
       <header className="nav-shell">
         <a className="brand-lockup" href="#home" aria-label={`${profile.name} home`}>
-          <span>Saurav.</span>
-          <small>Full-stack portfolio</small>
+          <span>{profile.initials}</span>
+          <small>{profile.location}</small>
         </a>
 
         <nav className="primary-nav" aria-label="Primary navigation">
@@ -100,189 +222,121 @@ function App() {
           ))}
         </nav>
 
-        <a className="nav-icon-button" href={profile.github} target="_blank" rel="noreferrer" aria-label="Open GitHub">
-          <GitBranch size={19} aria-hidden="true" />
-        </a>
+        <GradientButton href={profile.resume} external className="nav-cta">
+          <Download size={16} aria-hidden="true" />
+          Resume
+        </GradientButton>
       </header>
 
       <main>
         <section className="hero-section" id="home">
           <Scene3D />
-          <div className="hero-content" data-reveal>
-            <p className="eyebrow">
-              <span aria-hidden="true" />
-              {profile.availability}
-            </p>
-            <h1>Full-Stack Developer</h1>
-            <p className="hero-copy">
-              {profile.headline} I turn clean design systems into fast React, PHP,
-              Node.js, MySQL, and MongoDB products.
-            </p>
-            <div className="hero-actions">
-              <a className="button primary" href="#work">
-                View My Work
-                <ArrowRight size={18} aria-hidden="true" />
-              </a>
-              <a className="button secondary" href="#contact">
-                Get in Touch
-                <Send size={18} aria-hidden="true" />
-              </a>
+          <div className="hero-grid">
+            <div className="hero-copy" data-reveal>
+              <p className="eyebrow">{profile.availability}</p>
+              <h1>
+                HI I'M
+                <span>SAURAV</span>
+              </h1>
+              <p>{profile.headline}</p>
+            </div>
+
+            <div className="hero-panel" data-reveal>
+              <span>Full-stack developer</span>
+              <p>{profile.role}</p>
+              <GradientButton href="#work">
+                View Work
+                <ArrowRight size={17} aria-hidden="true" />
+              </GradientButton>
             </div>
           </div>
-
-          <div className="scroll-cue" aria-hidden="true">
-            <ArrowRight size={28} />
-          </div>
+          <div className="hero-divider" aria-hidden="true" />
         </section>
 
-        <section className="stats-section" aria-label="Portfolio stats">
-          <div className="stats-grid">
-            {stats.map((item) => (
-              <div className="stat-block" key={item.label}>
-                <strong>{item.value}</strong>
-                <span>{item.label}</span>
-              </div>
+        <section className="preview-section" aria-label="Featured portfolio previews">
+          <div className="preview-track">
+            {featuredPreview.map((project) => (
+              <a
+                className="preview-card"
+                href={project.live || '#work'}
+                target={project.live ? '_blank' : undefined}
+                rel={project.live ? 'noreferrer' : undefined}
+                key={project.title}
+              >
+                <img src={project.image} alt={`${project.title} website preview`} />
+                <span>{project.title}</span>
+              </a>
             ))}
           </div>
         </section>
 
-        <section className="section work-section" id="work">
-          <div className="section-inner">
-            <div className="section-intro" data-reveal>
-              <p className="section-kicker">Selected Work</p>
-              <h2>Client-ready websites with product logic underneath.</h2>
-              <p>
-                A focused collection of local business, education, healthcare, and
-                service websites shaped for trust, clarity, and fast action.
-              </p>
+        <section className="stats-section" aria-label="Portfolio stats">
+          {stats.map((item) => (
+            <div className="stat-block" key={item.label} data-reveal>
+              <strong>{item.value}</strong>
+              <span>{item.label}</span>
             </div>
-
-            <div className="work-gallery">
-              {freelanceProjects.map((project) => {
-                const Card = project.live ? 'a' : 'article'
-
-                return (
-                  <Card
-                    className="visual-card"
-                    key={project.title}
-                    data-reveal
-                    href={project.live}
-                    target={project.live ? '_blank' : undefined}
-                    rel={project.live ? 'noreferrer' : undefined}
-                    aria-label={project.live ? `Open ${project.title} live demo` : undefined}
-                  >
-                    <img src={project.image} alt={`${project.title} website preview`} />
-                    <div className="visual-caption">
-                      <span>{project.category}</span>
-                      <h3>{project.title}</h3>
-                      <p>{project.result}</p>
-                      {project.live ? (
-                        <span className="visual-action">
-                          Open live demo
-                          <ArrowUpRight size={15} aria-hidden="true" />
-                        </span>
-                      ) : null}
-                    </div>
-                  </Card>
-                )
-              })}
-            </div>
-          </div>
+          ))}
         </section>
 
-        <section className="section systems-section" id="projects">
-          <div className="section-inner">
-            <div className="section-intro" data-reveal>
-              <p className="section-kicker">GitHub Projects</p>
-              <h2>Backend-aware builds, dashboards, and real workflows.</h2>
-              <p>
-                Public repositories showing auth, roles, bookings, records, exports,
-                and deployable frontend patterns.
-              </p>
+        <section className="experience-section" id="experience">
+          <div className="section-inner experience-grid">
+            <div className="section-title light-title" data-reveal>
+              <p>Experience</p>
+              <h2>EXPERIENCE</h2>
             </div>
 
-            <div className="system-grid">
-              {featuredProjects.map((project) => (
-                <article className="system-card" key={project.title} data-reveal>
-                  <div className="system-topline">
-                    <span>{project.type}</span>
-                    <Code2 size={18} aria-hidden="true" />
+            <div className="experience-list">
+              {timeline.map((item) => (
+                <article className="experience-item" key={`${item.year}-${item.title}`} data-reveal>
+                  <div>
+                    <span>{item.year}</span>
+                    <h3>{item.title}</h3>
                   </div>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <div className="tag-row" aria-label={`${project.title} tech stack`}>
-                    {project.stack.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
-                  <div className="card-actions">
-                    <a href={project.link} target="_blank" rel="noreferrer">
-                      Source
-                      <ExternalLink size={16} aria-hidden="true" />
-                    </a>
-                    {project.live ? (
-                      <a href={project.live} target="_blank" rel="noreferrer">
-                        Live
-                        <ArrowUpRight size={16} aria-hidden="true" />
-                      </a>
-                    ) : null}
-                  </div>
+                  <p>{item.description}</p>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="section about-section" id="about">
+        <section className="work-section" id="work">
           <div className="section-inner">
-            <div className="about-copy" data-reveal>
-              <p className="section-kicker">About Me</p>
-              <h2>Kumar Saurav builds calm interfaces for useful web products.</h2>
-              <p>
-                {profile.summary} I work best where design clarity, database-backed
-                workflows, and practical delivery all need to meet.
-              </p>
-              <div className="about-meta">
-                <span>
-                  <MapPin size={18} aria-hidden="true" />
-                  {profile.location}
-                </span>
-                <span>
-                  <BadgeCheck size={18} aria-hidden="true" />
-                  {profile.degree}
-                </span>
-              </div>
+            <div className="section-title dark-title" data-reveal>
+              <p>Selected builds</p>
+              <h2>WORK</h2>
             </div>
 
-            <div className="about-cards">
-              {services.map((service) => {
-                const Icon = serviceIcons[service.type] ?? Layers3
-                return (
-                  <article className="about-card" key={service.title} data-reveal>
-                    <span className="icon-tile">
-                      <Icon size={25} aria-hidden="true" />
-                    </span>
-                    <h3>{service.title}</h3>
-                    <p>{service.description}</p>
-                  </article>
-                )
-              })}
-            </div>
+            <WorkStack
+              title="Website Work"
+              kicker="Client websites and visual demos"
+              projects={websiteProjects}
+              previewImages={featuredPreview}
+              startAt={1}
+            />
+
+            <WorkStack
+              title="Software Work"
+              kicker="Backend systems and GitHub projects"
+              projects={softwareProjects}
+              variant="software"
+              startAt={websiteProjects.length + 1}
+            />
           </div>
         </section>
 
-        <section className="section skills-section" id="skills">
+        <section className="skills-section" id="skills">
           <div className="section-inner">
-            <div className="section-intro" data-reveal>
-              <p className="section-kicker">Toolbox</p>
-              <h2>Frontend polish, backend structure, and creative delivery.</h2>
+            <div className="section-title light-title" data-reveal>
+              <p>Technical range</p>
+              <h2>SKILLS</h2>
             </div>
 
             <div className="skill-grid">
               {skills.map((group) => (
                 <article className="skill-card" key={group.title} data-reveal>
                   <h3>{group.title}</h3>
-                  <div className="tag-row" aria-label={`${group.title} skills`}>
+                  <div className="tag-row">
                     {group.items.map((item) => (
                       <span key={item}>{item}</span>
                     ))}
@@ -291,7 +345,7 @@ function App() {
               ))}
             </div>
 
-            <div className="proof-line" data-reveal>
+            <div className="proof-grid" data-reveal>
               <div>
                 <strong>Certifications</strong>
                 {certifications.map((item) => (
@@ -308,31 +362,52 @@ function App() {
           </div>
         </section>
 
+        <section className="about-band">
+          <div className="section-inner about-grid">
+            <div data-reveal>
+              <p className="eyebrow">About Saurav</p>
+              <h2>Useful products, clean flows, and client-ready delivery.</h2>
+            </div>
+            <div className="about-copy-block" data-reveal>
+              <p>{profile.summary}</p>
+              <div className="about-meta">
+                <span>
+                  <MapPin size={17} aria-hidden="true" />
+                  {profile.location}
+                </span>
+                <span>
+                  <BadgeCheck size={17} aria-hidden="true" />
+                  {profile.degree}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="contact-section" id="contact">
           <div className="contact-inner" data-reveal>
-            <p className="section-kicker">Contact</p>
-            <h2>Let's create something useful, sharp, and ready to ship.</h2>
+            <p className="eyebrow">Contact</p>
+            <h2>LET'S WORK TOGETHER</h2>
             <p>
-              Send the idea, business type, photos, and contact details. I can turn
-              them into a responsive website, portfolio, dashboard, or full-stack app.
+              Have a project, internship, or freelance website in mind? Send the brief
+              and I will help shape it into a fast, responsive web experience.
             </p>
+            <GradientButton href={`mailto:${profile.email}`} className="contact-cta">
+              Start a Conversation
+              <Send size={17} aria-hidden="true" />
+            </GradientButton>
 
-            <a className="button primary contact-cta" href={`mailto:${profile.email}`}>
-              Get in Touch
-              <Mail size={18} aria-hidden="true" />
-            </a>
-
-            <div className="social-row" aria-label="Contact links">
-              {socialLinks.map(({ label, href, Icon, external }) => (
+            <div className="contact-cards">
+              {contactLinks.map(({ label, value, href, Icon, external }) => (
                 <a
-                  key={label}
                   href={href}
-                  title={label}
-                  aria-label={label}
+                  key={label}
                   target={external ? '_blank' : undefined}
                   rel={external ? 'noreferrer' : undefined}
                 >
                   <Icon size={20} aria-hidden="true" />
+                  <span>{label}</span>
+                  <strong>{value}</strong>
                 </a>
               ))}
             </div>

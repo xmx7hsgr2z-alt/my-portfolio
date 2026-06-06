@@ -115,7 +115,7 @@ export const freelanceProjects = [
     title: 'FashionHub Buxar',
     category: 'Bridal lehenga rental store',
     description:
-      "Full-stack lehenga rental store for Buxar's first dedicated bridal studio. Real product images, category filtering, rental booking flow, and live inventory — built with React, Node.js, Express, and PostgreSQL.",
+      "Full-stack lehenga rental store for Buxar's first dedicated bridal studio. Real product images, category filtering, rental booking flow, and live inventory - built with React, Node.js, Express, and PostgreSQL.",
     stack: ['React', 'Node.js', 'Express', 'PostgreSQL'],
     image: fashionhub,
     result: 'Live rental store',
