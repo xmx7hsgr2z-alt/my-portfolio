@@ -1,5 +1,7 @@
 // Note: FashionHub preview uses the PNG from the public project assets.
 const fashionhub = `${import.meta.env.BASE_URL}projects/fashionhub/images/fashionhub.png`
+const merakiRestaurant =
+  'https://content3.jdmagicbox.com/comp/pauri/l5/9999p1368.1368.180630050944.d1l5/catalogue/meraki-restaurant-pauri-restaurants-v7qqqt9c4e.jpg'
 
 import impulseClasses from '../assets/freelance/impulse-classes.jpg'
 import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
@@ -43,9 +45,9 @@ export const navItems = [
 ]
 
 export const stats = [
-  { value: '10+', label: 'Real-world projects' },
+  { value: '14', label: 'Real-world projects' },
   { value: '5', label: 'Public GitHub repos' },
-  { value: '8', label: 'Freelance demos' },
+  { value: '10', label: 'Website work' },
   { value: 'BCA', label: 'Full-stack student' },
 ]
 
@@ -130,6 +132,16 @@ export const freelanceProjects = [
     image: neettuMakeoverStudioAcademy,
     result: 'Dark bridal booking experience',
     live: `${import.meta.env.BASE_URL}projects/neettu-makeover-studio-academy/`,
+  },
+  {
+    title: 'Meraki Restaurant & Cafe',
+    category: 'Restaurant website',
+    description:
+      'A warm multi-page restaurant website for Meraki Kotdwar with cuisine highlights, table reservation flow, gallery, contact details, WhatsApp ordering, and SEO-ready local business metadata.',
+    stack: ['Next.js', 'Tailwind CSS', 'SEO', 'Netlify'],
+    image: merakiRestaurant,
+    result: 'Live restaurant website',
+    live: 'https://mirakidemo-uk15.netlify.app/',
   },
   {
     title: 'Neettu Makeover Bridal Booking',
