@@ -4,6 +4,7 @@ const merakiRestaurant =
   'https://content3.jdmagicbox.com/comp/pauri/l5/9999p1368.1368.180630050944.d1l5/catalogue/meraki-restaurant-pauri-restaurants-v7qqqt9c4e.jpg'
 
 import impulseClasses from '../assets/freelance/impulse-classes.jpg'
+import homeCleaningDemo from '../assets/freelance/home-cleaning-demo.png'
 import indiraHomeopathy from '../assets/freelance/indira-homeopathy.jpg'
 import ivoryDental from '../assets/freelance/ivory-dental.jpg'
 import neettuMakeoverBridalBooking from '../assets/freelance/neettu-makeover-bridal-booking.jpg'
@@ -45,9 +46,9 @@ export const navItems = [
 ]
 
 export const stats = [
-  { value: '14', label: 'Real-world projects' },
+  { value: '15', label: 'Real-world projects' },
   { value: '5', label: 'Public GitHub repos' },
-  { value: '10', label: 'Website work' },
+  { value: '11', label: 'Website work' },
   { value: 'BCA', label: 'Full-stack student' },
 ]
 
@@ -142,6 +143,16 @@ export const freelanceProjects = [
     image: merakiRestaurant,
     result: 'Live restaurant website',
     live: 'https://mirakidemo-uk15.netlify.app/',
+  },
+  {
+    title: 'Sparkle Home Cleaning',
+    category: 'Home cleaning website',
+    description:
+      'A polished home-cleaning service website with premium hero messaging, service sections, pricing, reviews, contact flow, and quick-call access.',
+    stack: ['React', 'Responsive UI', 'Netlify', 'Service Website'],
+    image: homeCleaningDemo,
+    result: 'Live cleaning service website',
+    live: 'https://home-cleaning-demo.netlify.app/',
   },
   {
     title: 'Neettu Makeover Bridal Booking',
