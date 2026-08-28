@@ -16,6 +16,7 @@ const profilePhoto = `${import.meta.env.BASE_URL}projects/neettu-makeover-studio
 import scholarsHub from '../assets/freelance/scholars-hub.jpg'
 import sriRamMedical from '../assets/freelance/sri-ram-medical.jpg'
 import visionInstitute from '../assets/freelance/vision-institute.jpg'
+import viralVaultX from '../assets/freelance/viralvaultx-preview.png'
 
 export const profile = {
   name: 'Kumar Saurav',
@@ -120,7 +121,7 @@ export const freelanceProjects = [
     description:
       'Premium US-focused home & kitchen storefront inspired by a modern lifestyle e-commerce layout, featuring conversion-driven browsing, clear product storytelling, and a polished shopping experience built for a Shopify brand.',
     stack: ['Shopify', 'SEO', 'Google Merchant Center', 'E-commerce UX', 'Marketing Funnel'],
-    image: '/viralvaultx-preview.png',
+    image: viralVaultX,
     result: 'Live storefront website',
     live: 'https://viralvaultx.com/',
   },
