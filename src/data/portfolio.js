@@ -46,10 +46,10 @@ export const navItems = [
 ]
 
 export const stats = [
-  { value: '15', label: 'Real-world projects' },
-  { value: '5', label: 'Public GitHub repos' },
-  { value: '11', label: 'Website work' },
-  { value: 'BCA', label: 'Full-stack student' },
+  { value: '16', label: 'Real-world projects' },
+  { value: '6', label: 'Public GitHub repos' },
+  { value: '12', label: 'Website work' },
+  { value: '4', label: 'Software work' },
 ]
 
 export const services = [
@@ -114,6 +114,16 @@ export const featuredProjects = [
 ]
 
 export const freelanceProjects = [
+  {
+    title: 'ViralVaultX',
+    category: 'Shopify storefront website',
+    description:
+      'Premium US-focused home & kitchen storefront inspired by a modern lifestyle e-commerce layout, featuring conversion-driven browsing, clear product storytelling, and a polished shopping experience built for a Shopify brand.',
+    stack: ['Shopify', 'SEO', 'Google Merchant Center', 'E-commerce UX', 'Marketing Funnel'],
+    image: '/viralvaultx-preview.png',
+    result: 'Live storefront website',
+    live: 'https://viralvaultx.com/',
+  },
   {
     title: 'FashionHub Buxar',
     category: 'Bridal lehenga rental store',
@@ -249,25 +259,31 @@ export const skills = [
 
 export const timeline = [
   {
-    year: '2026',
+    year: '2025',
     title: 'Public GitHub launch',
     description:
       'Published 5 public repositories including Smart Local Service Finder, Attendance App, Hospital Management System, Smartlock DApp, and a Python trading bot.',
   },
   {
-    year: '2025',
+    year: '2026',
+    title: 'ViralVaultX — Shopify storefront website',
+    description:
+      'Designed and developed a premium US-focused home & kitchen storefront website inspired by the attached lifestyle e-commerce layout, with a conversion-oriented homepage, category-driven browsing, clean product presentation, and mobile-friendly shopping experience for a modern Shopify brand.',
+  },
+  {
+    year: '2023-2026',
     title: 'BCA at Uttaranchal University',
     description:
       'Focused on full-stack web development, databases, REST APIs, Java, Python, PHP, React, and software engineering fundamentals.',
   },
   {
     year: '2025',
-    title: 'Full-stack project sprint',
+    title: 'Website development work',
     description:
-      'Built civic tech, smart local services, attendance automation, healthcare dashboards, and database-backed admin workflows.',
+      'Designed and developed responsive business and portfolio websites with polished layouts, service pages, contact forms, and client-focused UI for real-world web presence.',
   },
   {
-    year: '2023-2024',
+    year: '2022-2023',
     title: 'Media Executive, NGO',
     description:
       'Handled social media growth, content calendars, video/graphic production, campaign posting, data entry, and reporting.',
