@@ -145,7 +145,7 @@ export default function CinematicHero() {
               Shipping high-converting landing pages, healthcare management portals, local booking applications, and e-commerce platforms with pixel precision.
             </p>
             <div className="pt-2 flex justify-start sm:justify-end gap-2 text-[10px] sm:text-xs font-mono text-cyan-300">
-              <span className="px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30">16+ Real Projects</span>
+              <span className="px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30">17+ Real Projects</span>
               <span className="px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30">6 Public Repos</span>
             </div>
           </div>

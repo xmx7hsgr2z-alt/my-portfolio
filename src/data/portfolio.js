@@ -17,6 +17,7 @@ import scholarsHub from '../assets/freelance/scholars-hub.jpg'
 import sriRamMedical from '../assets/freelance/sri-ram-medical.jpg'
 import visionInstitute from '../assets/freelance/vision-institute.jpg'
 import viralVaultX from '../assets/freelance/viralvaultx-preview.png'
+import bbConstructions from '../assets/freelance/bb-constructions.png'
 
 export const profile = {
   name: 'Kumar Saurav',
@@ -47,9 +48,9 @@ export const navItems = [
 ]
 
 export const stats = [
-  { value: '16', label: 'Real-world projects' },
+  { value: '17', label: 'Real-world projects' },
   { value: '6', label: 'Public GitHub repos' },
-  { value: '12', label: 'Website work' },
+  { value: '13', label: 'Website work' },
   { value: '4', label: 'Software work' },
 ]
 
@@ -115,6 +116,16 @@ export const featuredProjects = [
 ]
 
 export const freelanceProjects = [
+  {
+    title: 'B.B. Constructions',
+    category: 'Luxury real estate developer website',
+    description:
+      "Official website of B.B. Constructions, Guwahati's premier real-estate developer. Features modern 2, 3 & 4 BHK luxury residential developments (BB Veda, BB Utsav, BB Shine, BB Jogesh), RERA details, interactive 3D architectural scenes, and site-visit booking.",
+    stack: ['Next.js', 'React', 'Tailwind CSS', 'RERA', 'Web App'],
+    image: bbConstructions,
+    result: 'Live real estate website',
+    live: 'https://bb-ten-tau.vercel.app/',
+  },
   {
     title: 'ViralVaultX',
     category: 'Shopify storefront website',
@@ -259,6 +270,12 @@ export const skills = [
 ]
 
 export const timeline = [
+  {
+    year: '2026',
+    title: 'B.B. Constructions — Real Estate Website',
+    description:
+      "Designed and developed the luxury showcase website for B.B. Constructions, Guwahati's premier real-estate developer, featuring 3D interactive architectural scenes, residential project portfolios (BB Veda, BB Utsav, BB Shine), RERA details, and site visit booking.",
+  },
   {
     year: '2025',
     title: 'Public GitHub launch',
