@@ -7,7 +7,6 @@ export default function ImageSequenceCanvas({
   fileNamePrefix = 'ezgif-frame-',
   fileNameDigits = 3,
   fileExtension = '.jpg',
-  aspectRatio = 16 / 9,
   objectFit = 'cover',
   className = '',
   overlayOpacity = 0,
@@ -16,7 +15,9 @@ export default function ImageSequenceCanvas({
   const canvasRef = useRef(null)
   const imagesRef = useRef(new Map())
   const [isFirstFrameLoaded, setIsFirstFrameLoaded] = useState(false)
-  const currentFrameIndexRef = useRef(1)
+  const displayedFrameRef = useRef(1)
+  const targetFrameRef = useRef(1)
+  const animFrameIdRef = useRef(null)
   const [isMobile, setIsMobile] = useState(false)
 
   // Detect Mobile / Touch Screen
@@ -36,11 +37,10 @@ export default function ImageSequenceCanvas({
     return `${cleanBase}${folder}/${fileNamePrefix}${padded}${fileExtension}`
   }
 
-  // Preload Images with Adaptive Step for Mobile vs Desktop
+  // Preload Images Aggressively for Maximum Smoothness
   useEffect(() => {
     let isMounted = true
     const imagesMap = imagesRef.current
-    const effectiveStep = isMobile ? priorityStep * 2 : priorityStep
 
     const loadSingleFrame = (index) => {
       if (imagesMap.has(index)) return Promise.resolve(imagesMap.get(index))
@@ -73,9 +73,10 @@ export default function ImageSequenceCanvas({
       })
     }
 
-    // Key milestone frames
+    // Step 1: Preload key milestone frames first to make scene responsive instantly
     const keyFrames = []
-    for (let i = 1; i <= frameCount; i += effectiveStep) {
+    const step = isMobile ? priorityStep * 2 : priorityStep
+    for (let i = 1; i <= frameCount; i += step) {
       keyFrames.push(i)
     }
     if (!keyFrames.includes(frameCount)) keyFrames.push(frameCount)
@@ -83,6 +84,7 @@ export default function ImageSequenceCanvas({
     Promise.all(keyFrames.map(loadSingleFrame)).then(() => {
       if (!isMounted) return
 
+      // Step 2: Stream-load ALL remaining frames in high-concurrency batches
       const remainingFrames = []
       for (let i = 1; i <= frameCount; i++) {
         if (!imagesMap.has(i)) remainingFrames.push(i)
@@ -90,11 +92,11 @@ export default function ImageSequenceCanvas({
 
       const loadNextBatch = (startIndex) => {
         if (!isMounted || startIndex >= remainingFrames.length) return
-        const batchSize = isMobile ? effectiveStep * 2 : effectiveStep * 4
+        const batchSize = isMobile ? 6 : 12
         const batch = remainingFrames.slice(startIndex, startIndex + batchSize)
         Promise.all(batch.map(loadSingleFrame)).then(() => {
           if (isMounted) {
-            setTimeout(() => loadNextBatch(startIndex + batch.length), isMobile ? 80 : 40)
+            setTimeout(() => loadNextBatch(startIndex + batch.length), 20)
           }
         })
       }
@@ -107,13 +109,12 @@ export default function ImageSequenceCanvas({
     }
   }, [folder, frameCount, priorityStep, isMobile])
 
-  const drawFrame = (frameIndex) => {
+  const drawFrame = (primaryIndex, exactFloatIndex = null) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const containerWidth = canvas.parentElement?.clientWidth || window.innerWidth
     const containerHeight = canvas.parentElement?.clientHeight || window.innerHeight
-    // Limit dpr to 1.5 on mobile to save GPU memory & boost fps
     const maxDpr = isMobile ? 1.5 : 2
     const dpr = Math.min(window.devicePixelRatio || 1, maxDpr)
 
@@ -129,13 +130,13 @@ export default function ImageSequenceCanvas({
     if (!ctx) return
 
     const imagesMap = imagesRef.current
-    let imgToDraw = imagesMap.get(frameIndex)
+    let imgToDraw = imagesMap.get(primaryIndex)
 
-    // Fallback to closest available frame
+    // Fallback to closest available frame if primary is missing
     if (!imgToDraw) {
       let minDelta = Infinity
       for (const [idx, img] of imagesMap.entries()) {
-        const delta = Math.abs(idx - frameIndex)
+        const delta = Math.abs(idx - primaryIndex)
         if (delta < minDelta) {
           minDelta = delta
           imgToDraw = img
@@ -178,7 +179,29 @@ export default function ImageSequenceCanvas({
 
       ctx.imageSmoothingEnabled = true
       ctx.imageSmoothingQuality = isMobile ? 'medium' : 'high'
-      ctx.drawImage(imgToDraw, offsetX, offsetY, drawWidth, drawHeight)
+
+      // Sub-frame motion crossfade blending for liquid smooth playback
+      if (exactFloatIndex !== null && !isMobile) {
+        const floorFrame = Math.floor(exactFloatIndex)
+        const ceilFrame = Math.ceil(exactFloatIndex)
+        const fraction = exactFloatIndex - floorFrame
+
+        const floorImg = imagesMap.get(floorFrame)
+        const ceilImg = imagesMap.get(ceilFrame)
+
+        if (floorImg && ceilImg && floorFrame !== ceilFrame && fraction > 0.08 && fraction < 0.92) {
+          ctx.globalAlpha = 1
+          ctx.drawImage(floorImg, offsetX, offsetY, drawWidth, drawHeight)
+
+          ctx.globalAlpha = fraction
+          ctx.drawImage(ceilImg, offsetX, offsetY, drawWidth, drawHeight)
+          ctx.globalAlpha = 1
+        } else {
+          ctx.drawImage(imgToDraw, offsetX, offsetY, drawWidth, drawHeight)
+        }
+      } else {
+        ctx.drawImage(imgToDraw, offsetX, offsetY, drawWidth, drawHeight)
+      }
 
       if (overlayOpacity > 0) {
         ctx.fillStyle = `rgba(5, 5, 5, ${overlayOpacity})`
@@ -189,31 +212,56 @@ export default function ImageSequenceCanvas({
     ctx.restore()
   }
 
+  // Update target frame float whenever progress prop changes
   useEffect(() => {
     const clampedProgress = Math.max(0, Math.min(1, progress))
-    const targetFrame = Math.max(1, Math.min(frameCount, Math.round(1 + clampedProgress * (frameCount - 1))))
-    currentFrameIndexRef.current = targetFrame
+    targetFrameRef.current = 1 + clampedProgress * (frameCount - 1)
+  }, [progress, frameCount])
 
-    let animationFrameId
-    const render = () => {
-      drawFrame(currentFrameIndexRef.current)
+  // Continuous RAF loop for physics-based frame lerp interpolation
+  useEffect(() => {
+    let running = true
+
+    const loop = () => {
+      if (!running) return
+
+      const target = targetFrameRef.current
+      const current = displayedFrameRef.current
+      const diff = target - current
+
+      // Smooth exponential lerp
+      const lerpSpeed = isMobile ? 0.22 : 0.16
+      if (Math.abs(diff) > 0.001) {
+        displayedFrameRef.current += diff * lerpSpeed
+      } else {
+        displayedFrameRef.current = target
+      }
+
+      const frameToDraw = Math.max(1, Math.min(frameCount, Math.round(displayedFrameRef.current)))
+      drawFrame(frameToDraw, displayedFrameRef.current)
+
+      animFrameIdRef.current = requestAnimationFrame(loop)
     }
 
-    animationFrameId = requestAnimationFrame(render)
+    animFrameIdRef.current = requestAnimationFrame(loop)
 
     return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId)
+      running = false
+      if (animFrameIdRef.current) {
+        cancelAnimationFrame(animFrameIdRef.current)
+      }
     }
-  }, [progress, frameCount, overlayOpacity, objectFit, isFirstFrameLoaded])
+  }, [frameCount, overlayOpacity, objectFit, isFirstFrameLoaded, isMobile])
 
   useEffect(() => {
     const handleResize = () => {
-      drawFrame(currentFrameIndexRef.current)
+      const frameToDraw = Math.max(1, Math.min(frameCount, Math.round(displayedFrameRef.current)))
+      drawFrame(frameToDraw, displayedFrameRef.current)
     }
 
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, [frameCount])
 
   return (
     <div className={`relative w-full h-full overflow-hidden bg-[#050505] ${className}`}>

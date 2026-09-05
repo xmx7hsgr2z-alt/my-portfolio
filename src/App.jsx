@@ -14,7 +14,6 @@ export default function App() {
   // Section Observer for Navbar Highlight
   useEffect(() => {
     const sectionIds = ['intro', 'showcase', 'work', 'skills', 'about', 'contact']
-    const observers = []
 
     const handleIntersect = (entries) => {
       entries.forEach((entry) => {

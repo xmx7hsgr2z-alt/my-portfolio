@@ -5,9 +5,11 @@ import { stats } from '../data/portfolio.js'
 
 export default function ShowcaseSection() {
   const containerRef = useRef(null)
+  const targetProgressRef = useRef(0)
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    let animId
     const handleScroll = () => {
       if (!containerRef.current) return
       const rect = containerRef.current.getBoundingClientRect()
@@ -18,14 +20,26 @@ export default function ShowcaseSection() {
 
       const currentScroll = -rect.top
       const rawProgress = currentScroll / totalScrollableHeight
-      const clampedProgress = Math.max(0, Math.min(1, rawProgress))
+      targetProgressRef.current = Math.max(0, Math.min(1, rawProgress))
+    }
 
-      setProgress(clampedProgress)
+    const updateSmoothProgress = () => {
+      setProgress((prev) => {
+        const diff = targetProgressRef.current - prev
+        if (Math.abs(diff) < 0.0001) return targetProgressRef.current
+        return prev + diff * 0.15
+      })
+      animId = requestAnimationFrame(updateSmoothProgress)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    animId = requestAnimationFrame(updateSmoothProgress)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (animId) cancelAnimationFrame(animId)
+    }
   }, [])
 
   const overlayOpacity = Math.sin(progress * Math.PI)
