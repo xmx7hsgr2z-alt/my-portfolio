@@ -18,7 +18,6 @@ import sriRamMedical from '../assets/freelance/sri-ram-medical.jpg'
 import visionInstitute from '../assets/freelance/vision-institute.jpg'
 import viralVaultX from '../assets/freelance/viralvaultx-preview.png'
 import bbConstructions from '../assets/freelance/bb-constructions.png'
-import cafeRadix from '../assets/freelance/cafe-radix.png'
 
 export const profile = {
   name: 'Kumar Saurav',
@@ -49,9 +48,9 @@ export const navItems = [
 ]
 
 export const stats = [
-  { value: '18', label: 'Real-world projects' },
+  { value: '17', label: 'Real-world projects' },
   { value: '6', label: 'Public GitHub repos' },
-  { value: '14', label: 'Website work' },
+  { value: '13', label: 'Website work' },
   { value: '4', label: 'Software work' },
 ]
 
@@ -117,16 +116,6 @@ export const featuredProjects = [
 ]
 
 export const freelanceProjects = [
-  {
-    title: 'Cafe Radix',
-    category: 'Gourmet cafe & dining website',
-    description:
-      "Official website of Cafe Radix, Kotdwara's home for fresh brews, cozy vibes, and global flavors. Features artisanal menu highlights, online table reservations, Swiggy & Zomato delivery integration, customer reviews, and local business SEO metadata.",
-    stack: ['React', 'Tailwind CSS', 'Vite', 'Swiggy & Zomato', 'Web App'],
-    image: cafeRadix,
-    result: 'Live cafe website',
-    live: 'https://caferadix.vercel.app/',
-  },
   {
     title: 'B.B. Constructions',
     category: 'Luxury real estate developer website',
@@ -281,12 +270,6 @@ export const skills = [
 ]
 
 export const timeline = [
-  {
-    year: '2026',
-    title: 'Cafe Radix — Gourmet Cafe Website',
-    description:
-      "Designed and developed the official website for Cafe Radix, Kotdwara's home for fresh brews, cozy vibes, and global flavors. Features artisanal menu highlights, online table reservations, Swiggy & Zomato delivery integration, customer reviews, and local business SEO metadata.",
-  },
   {
     year: '2026',
     title: 'B.B. Constructions — Real Estate Website',

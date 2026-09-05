@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../data/portfolio.js'
-import RandomLetterSwapNav from '@/components/ui/m-random-letter-swap-1.jsx'
 
 export default function Navbar({ activeSection = 'home' }) {
   const [scrolled, setScrolled] = useState(false)
@@ -58,10 +57,25 @@ export default function Navbar({ activeSection = 'home' }) {
           </div>
         </a>
 
-        {/* Desktop Random Letter Swap Navigation Links */}
-        <div className="hidden md:block">
-          <RandomLetterSwapNav links={navLinks} activeSection={activeSection} />
-        </div>
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center space-x-1 bg-white/[0.04] backdrop-blur-lg border border-white/[0.08] px-4 py-1.5 rounded-full shadow-inner">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href.replace('#', '')
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-300 ${
+                  isActive
+                    ? 'text-white bg-white/15 shadow-sm shadow-cyan-500/20 font-semibold'
+                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {link.label}
+              </a>
+            )
+          })}
+        </nav>
 
         {/* Mobile Hamburger Toggle */}
         <button

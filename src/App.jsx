@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
 import CinematicHero from './components/CinematicHero.jsx'
 import ShowcaseSection from './components/ShowcaseSection.jsx'
+import ProjectsSection from './components/ProjectsSection.jsx'
 import SkillsExperienceSection from './components/SkillsExperienceSection.jsx'
 import AboutSection from './components/AboutSection.jsx'
 import ContactSection from './components/ContactSection.jsx'
@@ -13,6 +14,7 @@ export default function App() {
   // Section Observer for Navbar Highlight
   useEffect(() => {
     const sectionIds = ['intro', 'showcase', 'work', 'skills', 'about', 'contact']
+    const observers = []
 
     const handleIntersect = (entries) => {
       entries.forEach((entry) => {
@@ -44,8 +46,11 @@ export default function App() {
         {/* Scene 1: Cinematic Intro & Camera Arc */}
         <CinematicHero />
 
-        {/* Scene 2: Multiple Website Showcase Reel & 3D Circular Split Roll Work Showcase */}
+        {/* Scene 2: Multiple Website Showcase Reel */}
         <ShowcaseSection />
+
+        {/* Real Projects & Case Studies */}
+        <ProjectsSection />
 
         {/* Skills Matrix, Certifications & Timeline */}
         <SkillsExperienceSection />
