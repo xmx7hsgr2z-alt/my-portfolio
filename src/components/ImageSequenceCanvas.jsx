@@ -7,7 +7,6 @@ export default function ImageSequenceCanvas({
   fileNamePrefix = 'ezgif-frame-',
   fileNameDigits = 3,
   fileExtension = '.jpg',
-  aspectRatio = 16 / 9,
   objectFit = 'cover',
   className = '',
   overlayOpacity = 0,
@@ -189,6 +188,8 @@ export default function ImageSequenceCanvas({
     ctx.restore()
   }
 
+  const displayedFrameRef = useRef(1)
+
   useEffect(() => {
     const clampedProgress = Math.max(0, Math.min(1, progress))
     const targetFrame = Math.max(1, Math.min(frameCount, Math.round(1 + clampedProgress * (frameCount - 1))))
@@ -196,7 +197,18 @@ export default function ImageSequenceCanvas({
 
     let animationFrameId
     const render = () => {
-      drawFrame(currentFrameIndexRef.current)
+      const diff = currentFrameIndexRef.current - displayedFrameRef.current
+      if (Math.abs(diff) > 0.05) {
+        displayedFrameRef.current += diff * 0.3
+      } else {
+        displayedFrameRef.current = currentFrameIndexRef.current
+      }
+
+      drawFrame(Math.round(displayedFrameRef.current))
+
+      if (Math.abs(currentFrameIndexRef.current - displayedFrameRef.current) > 0.05) {
+        animationFrameId = requestAnimationFrame(render)
+      }
     }
 
     animationFrameId = requestAnimationFrame(render)

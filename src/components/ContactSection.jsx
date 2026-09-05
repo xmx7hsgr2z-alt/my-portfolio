@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowUpRight, Check, Copy, GitBranch, Mail, Phone, Send } from 'lucide-react'
+import { ArrowUpRight, Check, Copy, Mail, Send } from 'lucide-react'
 import { profile } from '../data/portfolio.js'
 
 export default function ContactSection() {

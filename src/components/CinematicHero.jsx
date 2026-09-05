@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowDown, Sparkles } from 'lucide-react'
 import ImageSequenceCanvas from './ImageSequenceCanvas.jsx'
+import TextLoop from './ui/text-loop.jsx'
 import { profile } from '../data/portfolio.js'
 
 export default function CinematicHero() {
   const containerRef = useRef(null)
   const [progress, setProgress] = useState(0)
+  const targetProgressRef = useRef(0)
+  const smoothProgressRef = useRef(0)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,17 +23,33 @@ export default function CinematicHero() {
       const rawProgress = currentScroll / totalScrollableHeight
       const clampedProgress = Math.max(0, Math.min(1, rawProgress))
 
-      setProgress(clampedProgress)
+      targetProgressRef.current = clampedProgress
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    let rafId
+    const updateLerp = () => {
+      const diff = targetProgressRef.current - smoothProgressRef.current
+      if (Math.abs(diff) > 0.0001) {
+        smoothProgressRef.current += diff * 0.1
+        setProgress(smoothProgressRef.current)
+      }
+      rafId = requestAnimationFrame(updateLerp)
+    }
+
+    rafId = requestAnimationFrame(updateLerp)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   // Text phase opacities
   const phase1Opacity = Math.max(0, Math.min(1, (0.2 - progress) / 0.12))
-  
+
   const phase2Opacity =
     progress >= 0.25 && progress <= 0.6
       ? Math.sin(((progress - 0.25) / 0.35) * Math.PI)
@@ -74,11 +93,16 @@ export default function CinematicHero() {
             </span>
           </div>
 
-          {/* Center Main Headline */}
+          {/* Center Main Headline with 21st.dev TextLoop */}
           <div className="max-w-5xl space-y-3 sm:space-y-6 my-auto">
-            <p className="text-[10px] sm:text-sm font-mono tracking-[0.25em] sm:tracking-[0.3em] uppercase text-cyan-400/90 font-semibold">
-              CREATIVE DEVELOPER & BRAND EXPERIENCE
-            </p>
+            <div className="text-[10px] sm:text-sm font-mono tracking-[0.25em] sm:tracking-[0.3em] uppercase text-cyan-400/90 font-semibold">
+              <TextLoop interval={2.5}>
+                <span>CREATIVE FULL-STACK DEVELOPER</span>
+                <span>REACT & NODE.JS ARCHITECT</span>
+                <span>CLINIC & LOCAL SERVICE APPS</span>
+                <span>SHOPIFY & E-COMMERCE ENGINE</span>
+              </TextLoop>
+            </div>
             <h1 className="text-4xl sm:text-7xl lg:text-9xl font-sans font-extrabold tracking-tight text-white uppercase leading-[0.95] drop-shadow-2xl">
               KUMAR <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-cyan-400">SAURAV</span>
             </h1>
