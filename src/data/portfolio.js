@@ -246,6 +246,8 @@ export const freelanceProjects = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     image: sriRamMedical,
     result: 'Clean appointment funnel',
+    live: 'https://lively-kulfi-547236.netlify.app/',
+    liveLabel: 'Live Medical Centre Website',
   },
   {
     title: 'Vision Institute',
