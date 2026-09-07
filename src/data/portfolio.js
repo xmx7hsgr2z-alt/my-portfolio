@@ -235,6 +235,8 @@ export const freelanceProjects = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     image: ivoryDental,
     result: 'Premium healthcare UI',
+    live: 'https://beautiful-torte-3d3f60.netlify.app/',
+    liveLabel: 'Live Clinic Website',
   },
   {
     title: 'Sri Ram Medical Centre',
