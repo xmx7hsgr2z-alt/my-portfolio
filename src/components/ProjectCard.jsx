@@ -78,7 +78,7 @@ export default function ProjectCard({ project, index }) {
                 rel="noreferrer"
                 className="inline-flex items-center space-x-1.5 text-xs font-mono font-semibold text-cyan-400 hover:text-cyan-200 transition-colors group/link"
               >
-                <span>Live Storefront</span>
+                <span>{project.liveLabel || 'Live Preview'}</span>
                 <ExternalLink size={13} className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
               </a>
             )}
