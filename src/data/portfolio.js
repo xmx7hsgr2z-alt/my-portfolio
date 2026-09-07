@@ -255,6 +255,8 @@ export const freelanceProjects = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     image: visionInstitute,
     result: 'Skill-growth landing page',
+    live: 'https://visioninstitutedehradun.netlify.app/',
+    liveLabel: 'Live Institute Website',
   },
 ]
 
