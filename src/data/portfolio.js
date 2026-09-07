@@ -166,7 +166,8 @@ export const freelanceProjects = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     image: neettuMakeoverStudioAcademy,
     result: 'Dark bridal booking experience',
-    live: `${import.meta.env.BASE_URL}projects/neettu-makeover-studio-academy/`,
+    live: 'https://neettumakeoverstudio.netlify.app/',
+    liveLabel: 'Live Studio Website',
   },
   {
     title: 'Meraki Restaurant & Cafe',
@@ -196,7 +197,8 @@ export const freelanceProjects = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     image: neettuMakeoverBridalBooking,
     result: 'Editorial salon booking flow',
-    live: `${import.meta.env.BASE_URL}projects/neettu-makeover-bridal-booking/`,
+    live: 'https://neettumakeoverstudio2.netlify.app/',
+    liveLabel: 'Live Booking Website',
   },
   {
     title: 'Impulse Classes',

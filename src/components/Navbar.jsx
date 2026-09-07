@@ -29,10 +29,8 @@ export default function Navbar({ activeSection = 'home' }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'py-3.5 bg-[#050505]/80 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/80'
-          : 'py-6 bg-transparent border-b border-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent border-b border-transparent ${
+        scrolled ? 'py-3.5' : 'py-6'
       }`}
     >
       <div className="w-full px-6 sm:px-12 lg:px-16 flex items-center justify-between">
